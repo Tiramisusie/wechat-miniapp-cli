@@ -1,0 +1,21 @@
+{
+  "name": "wechat-miniapp",
+  "version": "0.1.0",
+  "description": "a command line tool for building a wechat mini app",
+  "main": "index.js",
+  "bin": {
+    "wx-mini": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "wechat",
+    "miniapp"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^2.9.0"
+  }
+}
