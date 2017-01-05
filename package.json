@@ -1,10 +1,10 @@
 {
-  "name": "wechat-miniapp",
+  "name": "wechat-miniapp-cli",
   "version": "0.1.0",
   "description": "a command line tool for building a wechat mini app",
   "main": "index.js",
   "bin": {
-    "wx-mini": "./bin/index.js"
+    "wxmini": "./bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

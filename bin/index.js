@@ -47,7 +47,6 @@ function addPage(page) {
 
 		let content = fs.readFileSync('./app.json', 'utf-8')
 		content = JSON.parse(content);
-		console.log(content);
 		content.pages.push(`pages/${page}`)
 		writeJsonFile('../app/app.json', content)
 	})
