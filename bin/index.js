@@ -15,23 +15,26 @@ commander
 	.command('add <page>')
 	.description('add a page')
 	.option('-i, --index', 'adding this param to specify the new page is the index')
-	.action(function(page) {
-		addPage(page)
+	.action(function(page, options) {
+		addPage(page, options.index)
 	})
 
 commander.parse(process.argv)
 
 function scaffold(name){
 	mkdirp.sync(name + '/pages')
-	fs.closeSync(fs.openSync(name + '/app.js', 'w'))
-	fs.closeSync(fs.openSync(name + '/app.wxss', 'w'))
+	fs.open(name + '/app.js', 'w', closeFile)
+	fs.open(name + '/app.wxss', 'w', closeFile)
 	let file = fs.openSync(name + '/app.json', 'w')
-	let content = {pages:[]};
-	writeJsonFile(file, content)
+	writeJsonFile(file, {pages:[]})
 }
 
+function closeFile(err, fd) {
+	if (err) throw err;
+		fs.close(fd, ()=>{})
+}
 
-function addPage(page) {
+function addPage(page, isIndex=false) {
 	let paths = page.split('/');
 	let name = paths.splice(-1);
 	let path = 'pages/' + paths.join('/');
@@ -40,19 +43,23 @@ function addPage(page) {
 		if (!exist) {
 			mkdirp.sync(path)
 		} 
-		fs.closeSync(fs.openSync(`${path}/${name}.js`, 'w'))
-		fs.closeSync(fs.openSync(`${path}/${name}.wxml`, 'w'))
-		fs.closeSync(fs.openSync(`${path}/${name}.wxss`, 'w'))
-		fs.closeSync(fs.openSync(`${path}/${name}.json`, 'w'))
+		fs.open(`${path}/${name}.js`, 'w', closeFile)
+		fs.open(`${path}/${name}.json`, 'w', closeFile)
+		fs.open(`${path}/${name}.wxml`, 'w', closeFile)
+		fs.open(`${path}/${name}.wxss`, 'w', closeFile)
 
 		let content = fs.readFileSync('./app.json', 'utf-8')
 		content = JSON.parse(content);
-		content.pages.push(`pages/${page}`)
+		if(isIndex) {
+			content.pages.unshift(`pages/${page}`)
+		} else {
+			content.pages.push(`pages/${page}`)
+		}
 		writeJsonFile('../app/app.json', content)
 	})
 
 }
 
 function writeJsonFile(file, data) {
-	fs.writeFile(file, JSON.stringify(data, null, 2))
+	fs.writeFileSync(file, JSON.stringify(data, null, 2))
 }

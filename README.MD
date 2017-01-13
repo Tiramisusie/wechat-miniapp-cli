@@ -23,10 +23,10 @@ this command will create something like
 
 ```
 app
- |-app.js
- |-app.json
- |-app.wxss
- |-pages/
+ |- app.js
+ |- app.json
+ |- app.wxss
+ |- pages/
 ```
 
 ### adding a page
